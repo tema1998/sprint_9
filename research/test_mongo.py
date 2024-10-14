@@ -1,9 +1,10 @@
+import os
 import time
 from typing import Callable
 
 from pymongo import MongoClient
 
-from research.fake_data import create_fake_like
+from research.fake_data import create_fake_like, create_fake_review, create_fake_bookmark
 from settings import settings
 from multiprocessing import Process
 
@@ -13,7 +14,11 @@ mongo_port = settings.mongo_port
 mongo_db = settings.mongo_db
 number_of_entries = settings.number_of_entries
 
-client = MongoClient(mongo_host, mongo_port, connect=True)
+if os.getpid() == 0:
+    client = MongoClient(mongo_host, mongo_port)
+else:
+    client = MongoClient(mongo_host, mongo_port, connect=False)
+
 mongo_db = client[mongo_db]
 
 
@@ -31,11 +36,16 @@ def test_insert(
     )
 
 if __name__ == "__main__":
-    test_insert(create_fake_like, "likes")
+    # test_insert(create_fake_like, "likes")
+    # test_insert(create_fake_bookmark, "bookmarks")
+    # test_insert(create_fake_review, "reviews")
 
-    # p1 = Process(target=test_insert, args=('bob',), daemon=True)
-    # p2 = Process(target=test_insert, args=('alice',), daemon=True)
-    # p1.start()
-    # p2.start()
-    # p1.join()
-    # p2.join()
+    p1 = Process(target=test_insert, args=(create_fake_like, 'likes'), daemon=True)
+    p2 = Process(target=test_insert, args=(create_fake_review, 'reviews'), daemon=True)
+    p3 = Process(target=test_insert, args=(create_fake_bookmark, 'bookmarks'), daemon=True)
+    p1.start()
+    p2.start()
+    p3.start()
+    p1.join()
+    p2.join()
+    p3.join()
