@@ -5,8 +5,8 @@ from typing import Callable
 
 from pymongo import MongoClient
 
-from research_mongo.fake_data import create_fake_like, create_fake_review, create_fake_bookmark
-from settings import settings
+from research.fake_data import create_fake_like, create_fake_review, create_fake_bookmark
+from research.settings import settings
 from multiprocessing import Process
 
 # Set logger level to INFO.
@@ -40,6 +40,7 @@ def insert(
 
     logging.info(f"Total time of loading collection '{collection_name}' with {number_of_entries} entries = "
              f"{end_time-start_time} seconds ({(end_time-start_time)/60} minutes)")
+
 
 if __name__ == "__main__":
 
