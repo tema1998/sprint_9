@@ -5,6 +5,7 @@ from faker import Faker
 
 fake = Faker()
 
+# comments
 const_film_id = 'fa93bca0-8849-4523-881d-a9c5793eaf77'
 const_user_id = '39ea84fe-a241-4d7b-a4c0-cee32f9ceefa'
 
