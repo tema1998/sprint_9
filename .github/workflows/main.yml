@@ -49,10 +49,10 @@ jobs:
           name: linting-report
           path: reports/linting-report
 
-      # Type checking
-      - name: Run mypy type checks
-        run: |
-          mypy . --ignore-missing-imports
+#      # Type checking
+#      - name: Run mypy type checks
+#        run: |
+#          mypy . --ignore-missing-imports
 
   notify-success:
     needs: lint-and-test

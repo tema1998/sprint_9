@@ -5,7 +5,11 @@ from typing import Callable
 
 from pymongo import MongoClient
 
-from research.fake_data import create_fake_like, create_fake_review, create_fake_bookmark
+from research.fake_data import (
+    create_fake_like,
+    create_fake_review,
+    create_fake_bookmark,
+)
 from research.settings import settings
 from multiprocessing import Process
 
@@ -27,10 +31,7 @@ else:
 mongo_db = client[mongo_db]
 
 
-def insert(
-        faker: Callable,
-        collection_name: str
-) -> None:
+def insert(faker: Callable, collection_name: str) -> None:
     collection = mongo_db.get_collection(collection_name)
 
     start_time = time.time()
@@ -38,16 +39,18 @@ def insert(
         collection.insert_one(faker())
     end_time = time.time()
 
-    logging.info(f"Total time of loading collection '{collection_name}' with {number_of_entries} entries = "
-             f"{end_time-start_time} seconds ({(end_time-start_time)/60} minutes)")
+    logging.info(
+        f"Total time of loading collection '{collection_name}' with {number_of_entries} entries = "
+        f"{end_time-start_time} seconds ({(end_time-start_time)/60} minutes)"
+    )
 
 
 if __name__ == "__main__":
 
     # Run multiprocessing of adding data to MongoDB.
-    p1 = Process(target=insert, args=(create_fake_like, 'likes'), daemon=True)
-    p2 = Process(target=insert, args=(create_fake_review, 'reviews'), daemon=True)
-    p3 = Process(target=insert, args=(create_fake_bookmark, 'bookmarks'), daemon=True)
+    p1 = Process(target=insert, args=(create_fake_like, "likes"), daemon=True)
+    p2 = Process(target=insert, args=(create_fake_review, "reviews"), daemon=True)
+    p3 = Process(target=insert, args=(create_fake_bookmark, "bookmarks"), daemon=True)
 
     p1.start()
     p2.start()
