@@ -41,7 +41,6 @@ def count_average_film_rating() -> None:
     Function count the number of bookmarks of user.
     """
     start_time = time.time()
-    # TODO Write aggregation.
     with psycopg.connect(
         **settings.get_pg_dsn(), row_factory=dict_row, cursor_factory=ClientCursor
     ) as conn, conn.cursor() as cursor:
